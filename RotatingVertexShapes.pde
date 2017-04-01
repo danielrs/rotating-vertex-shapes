@@ -21,6 +21,8 @@ void setup() {
   models.add(pentagon_model(INNER_RADIUS));
   models.add(hexagon_model(INNER_RADIUS));
   models.add(star_model(INNER_RADIUS));
+  models.add(cardioid_model(INNER_RADIUS));
+  models.add(blobbie_model(INNER_RADIUS));
   curr_index = 0;
 }
 
