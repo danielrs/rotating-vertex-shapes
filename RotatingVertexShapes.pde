@@ -1,3 +1,6 @@
+import gifAnimation.*;
+GifMaker gifExport;
+
 ArrayList<Model> models;
 int curr_index;
 
@@ -10,6 +13,9 @@ boolean key_released = true;
 void setup() {
   size(640, 480, P2D);
   
+  gifExport = new GifMaker(this, "gifs/triangle.gif");
+  gifExport.setRepeat(0);
+  
   VERTICES = 48;
   INNER_RADIUS = width / 5;
   OUTER_RADIUS = width / 4;
@@ -20,7 +26,8 @@ void setup() {
   models.add(rectangle_model(INNER_RADIUS));
   models.add(pentagon_model(INNER_RADIUS));
   models.add(hexagon_model(INNER_RADIUS));
-  curr_index = 0;
+  models.add(star_model(INNER_RADIUS));
+  curr_index = 5;
 }
 
 void keyPressed() {
@@ -57,4 +64,11 @@ void draw() {
   }
   
   model.rotate(0.01);
+  
+  gifExport.setDelay(20);
+  gifExport.addFrame();
+  if (TWO_PI / 3 - model.angle <= 0.001) {
+    gifExport.finish();
+    exit();
+  }
 }
