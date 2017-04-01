@@ -4,6 +4,7 @@
 Demo app in Processing for rotating shapes made out of projected vertices. Inspired by [this post][source].
 
 ## Examples
+![star](https://raw.githubusercontent.com/danielrs/rotating-vertex-shapes/master/gifs/star.gif)
 ![triangle](https://raw.githubusercontent.com/danielrs/rotating-vertex-shapes/master/gifs/triangle.gif)
 ![square](https://raw.githubusercontent.com/danielrs/rotating-vertex-shapes/master/gifs/square.gif)
 ![rectangle](https://raw.githubusercontent.com/danielrs/rotating-vertex-shapes/master/gifs/rectangle.gif)
