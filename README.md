@@ -1,7 +1,7 @@
 [source]: https://www.reddit.com/r/loadingicon/comments/603iu0/square_in_a_circle/
 
 # Rotating Vertex Shapes
-Demo app in Processing for rotating shapes made out of vertices. Inspired by [this post][source].
+Demo app in Processing for rotating shapes made out of projected vertices. Inspired by [this post][source].
 
 ## Examples
 ![triangle](https://raw.githubusercontent.com/danielrs/rotating-vertex-shapes/master/gifs/triangle.gif)
