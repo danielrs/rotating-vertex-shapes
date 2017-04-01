@@ -5,37 +5,36 @@ import java.util.Collections;
  * create the desired shape.
  */
 class Model {
-  ArrayList<Float> angles; // primary angles (aka vertices).
+  ArrayList<PolarPoint> points;
   float radius;
-  float rotation;
+  float angle;
   
   Model(float r) {
-    angles = new ArrayList(4);
+    points = new ArrayList();
     radius = r;
-    rotation = 0;
+    angle = 0;
   }
   
   /**
-   * Adds an a new primary angle to the model.
-   * @param angle the new angle to add.
+   * Adds an a new point to the model.
+   * @param point the new point to add.
    */
-  void addAngle(float angle) {
-    angles.add(angle % TWO_PI);
-    Collections.sort(angles);
+  void addPoint(PolarPoint point) {
+    points.add(point);
+    Collections.sort(points);
   }
   
   /**
-   * Rotates the primary angles in the model by given
+   * Rotates the points in the model by given
    * radians.
    * @param angle the radians to rotate clock-wise.
    */
   void rotate(float angle) {
-    rotation += angle % TWO_PI;
-    for (int i = 0; i < angles.size(); ++i) {
-      float new_angle = (angles.get(i) + angle) % TWO_PI;
-      angles.set(i, new_angle);
+    this.angle += angle % TWO_PI;
+    for (PolarPoint p : points) {
+      p.rotate(angle);
     }
-    Collections.sort(angles);
+    Collections.sort(points);
   }
   
   /**
@@ -54,26 +53,33 @@ class Model {
     
     float angle = curr_vertex * step;
     
-    // Find maximum primary angle that is less than 'angle'.
-    int index = angles.size() - 1;
-    while(true) {
-      if (index < 0 || angles.get(index) < angle) { break; }
+    // Find index whose angle is strictly less than 'angle'.
+    int index = points.size() - 1;
+    while(index >= 0 && points.get(index).getAngle() >= angle) {
       --index;
     }
     
-    float angle_a = angles.get(rem(index + 0, angles.size()));
-    float angle_b = angles.get(rem(index + 1, angles.size()));
+    // Start and end points of the current side of the shape.
+    PolarPoint point_a = points.get(rem(index + 0, points.size()));
+    PolarPoint point_b = points.get(rem(index + 1, points.size()));
     
-    PVector vertex = new PVector(1, 0).mult(radius).rotate(angle);
-    PVector vertex_a = new PVector(1, 0).mult(radius).rotate(angle_a);
-    PVector vertex_b = new PVector(1, 0).mult(radius).rotate(angle_b);
+    // Get and denormalize angles. We need to be strictly:
+    // angle_a <= angle <= angle_b.
+    float angle_a = point_a.getAngle();
+    float angle_b = point_b.getAngle();
+    if (angle_a > angle_b) angle_b += TWO_PI;
+    if (angle_a > angle) angle += TWO_PI;
     
-    // Find position of angle in side by doing vector-scalar projection.
+    // Now that points are normalized, we can convert them to vectors.
+    PVector vertex_a = fromPolar(point_a.getRadius(), angle_a);
+    PVector vertex_b = fromPolar(point_b.getRadius(), angle_b);
+    
+    // 'side' vector from vertex_a to vertex_b. The position of a vertex on
+    // this side depends on the position of `angle` between `angle_a` and
+    // `angle_b`. Values are interpolated using `map`.
     PVector side = PVector.sub(vertex_b, vertex_a);
-    PVector side_vertex = PVector.sub(vertex, vertex_a);
-    float proj = PVector.dot(side_vertex, side) / side.mag();
+    float scale = map(angle, angle_a, angle_b, 0, 1);
     
-    // Final position calculation.
-    return vertex_a.add(side.normalize().mult(proj));
+    return vertex_a.add(side.mult(scale));
   }
 }
