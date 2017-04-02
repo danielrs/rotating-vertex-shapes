@@ -53,7 +53,7 @@ void draw() {
   translate(width / 2, height / 2);
   for (int i = 0; i < VERTICES; ++i) {
     PVector outer_vert = new PVector(OUTER_RADIUS, 0).rotate(i * TWO_PI / VERTICES);
-    PVector inner_vert = model.getVertex(i * 1.0 / VERTICES, TWO_PI / VERTICES);
+    PVector inner_vert = model.getVertex(i * 1.0 / VERTICES);
     
     strokeWeight(2);
     stroke(0, 192, 255);
