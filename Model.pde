@@ -44,14 +44,10 @@ class Model {
    * the shape, and a 't' value of 1.0 is the last vertex of 
    * the shape.
    * @param t the interpolation value.
-   * @param step the step, in radians, to take around the circle.
    * @returns the vertex of the shape.
    */
-  PVector getVertex(float t, float step) {
-    int total_vertices = (int)(TWO_PI / step);
-    int curr_vertex = (int) map(t, 0, 1, 0, total_vertices) % total_vertices;
-    
-    float angle = curr_vertex * step;
+  PVector getVertex(float t) {
+    float angle = t * TWO_PI % TWO_PI;
     
     // Find index whose angle is strictly less than 'angle'.
     int index = points.size() - 1;

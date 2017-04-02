@@ -67,7 +67,7 @@ Model blobbie_model(float radius) {
   int VERTICES = 32;
   Model model = new Model(radius);
   for (float t = 0; t < TWO_PI; t += TWO_PI / VERTICES) {
-    float r = radius * 4 / 7 * (1 + 0.25 * cos(2*t + 5) + 0.5 * cos(3*t));
+    float r = radius * 4 / 7 * (1 + 0.25*cos(2*t + 5) + 0.5*cos(3*t));
     model.addPoint(polarPoint(r, t));
   }
   return model;
